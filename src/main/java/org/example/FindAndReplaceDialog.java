@@ -64,6 +64,7 @@ public class FindAndReplaceDialog extends JDialog {
                 if (wholeRadio.isSelected()) {
                     int start = textArea.getSelectionEnd(); // 从选择的文本结束位置开始搜索
                     index = text.indexOf(target, start);
+                    textArea.setSelectionEnd(index + target.length());
 
                 } else if (selectionRadio.isSelected()) {
                     int start = textArea.getSelectionStart();
