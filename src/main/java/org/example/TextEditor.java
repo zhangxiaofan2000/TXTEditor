@@ -16,6 +16,10 @@ public class TextEditor extends JFrame {
     private JButton prevButton, nextButton;
     private int currentPage = 1;
     private int linesPerPage = 10;
+    private int pageSize = 500; // 每页显示的字数
+
+    private JLabel pageLabel;
+    private int totalPage;
 
     public TextEditor() {
         setTitle("文本编辑器");
@@ -24,40 +28,73 @@ public class TextEditor extends JFrame {
 
         textArea = new JTextArea();
         textArea.setLineWrap(true); // 自动换行
+        textArea.setWrapStyleWord(true);
+
         Font font = new Font("宋体", Font.PLAIN, 20);
         textArea.setFont(font);
-
-        add(new JScrollPane(textArea));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        add(scrollPane);
 
 
         statusLabel = new JLabel("字数: 0");
         add(statusLabel, "South");
 
+        // 添加翻页按钮
+        JButton prevButton = new JButton("上一页");
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentPage > 1) {
+                    currentPage--;
+                    textArea.setCaretPosition((currentPage - 1) * pageSize);
+                    updatePageLabel();
+                }
+            }
+        });
+
+        JButton nextButton = new JButton("下一页");
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentPage < totalPage) {
+                    currentPage++;
+                    textArea.setCaretPosition((currentPage - 1) * pageSize);
+                    updatePageLabel();
+                }
+            }
+        });
+
+
+        // 添加下方的页码标签
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        pageLabel = new JLabel("第" + currentPage + "页/共" + totalPage + "页");
+        statusPanel.add(prevButton);
+        statusPanel.add(nextButton);
+        statusPanel.add(pageLabel);
+        add(statusPanel, BorderLayout.SOUTH);
+
+
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateStatusLabel();
-
+                updatePageLabel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateStatusLabel();
-
+                updatePageLabel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateStatusLabel();
+                updatePageLabel();
             }
 
-            private void updateStatusLabel() {
-                String text = textArea.getText();
-                int wordCount = text.isEmpty() ? 0 : text.trim().split("\\s+").length;
-                int charCount = text.length();
 
-                statusLabel.setText("字数: " + charCount);
-            }
+
         });
 
         JMenuBar menuBar = new JMenuBar();
@@ -79,10 +116,8 @@ public class TextEditor extends JFrame {
                     try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
                         textArea.read(reader, null);
 
-                        String text = textArea.getText();
-                        int charCount = text.length();
-                        statusLabel.setText("字数: " + charCount);
-                        setTitle(selectedFile.getName());
+                        updateStatusLabel();
+                        updatePageLabel();
 
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(TextEditor.this,
@@ -143,6 +178,24 @@ public class TextEditor extends JFrame {
 
 
     }
+
+    private void updatePageLabel() {
+        int charCount = textArea.getText().length();
+        totalPage = (int) Math.ceil((double) charCount / pageSize);
+        currentPage = Math.min(currentPage, totalPage);
+        pageLabel.setText("第" + currentPage + "页/共" + totalPage + "页");
+    }
+
+
+    private void updateStatusLabel() {
+        String text = textArea.getText();
+        int wordCount = text.isEmpty() ? 0 : text.trim().split("\\s+").length;
+        int charCount = text.length();
+
+        statusLabel.setText("字数: " + charCount);
+    }
+
+
 
     public static void main(String[] args) {
         TextEditor editor = new TextEditor();
