@@ -23,7 +23,7 @@ public class TextEditor extends JFrame {
     private int totalPage;
 
     public TextEditor() {
-        setTitle("文本编辑器");
+        setTitle("简单小说编辑器");
         setSize(800, 600);
         setLocationRelativeTo(null);
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/logo.jpg")));
