@@ -62,18 +62,25 @@ public class FindAndReplaceDialog extends JDialog {
                 String target = findField.getText();
                 int index = -1;
                 if (wholeRadio.isSelected()) {
-                    index = text.indexOf(target);
+                    int start = textArea.getSelectionEnd(); // 从选择的文本结束位置开始搜索
+                    index = text.indexOf(target, start);
+
                 } else if (selectionRadio.isSelected()) {
                     int start = textArea.getSelectionStart();
                     int end = textArea.getSelectionEnd();
+
                     index = text.indexOf(target, start);
+                    end = end > start ? end : start;
+                    if (index >= end) {
+                        index = -1;
+                    }
                 }
                 if (index != -1) {
                     textArea.setSelectionStart(index);
                     textArea.setSelectionEnd(index + target.length());
                 } else {
                     JOptionPane.showMessageDialog(FindAndReplaceDialog.this,
-                            "没有找到匹配的文本", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            "已经到文件末尾，没有找到匹配的文本", "提示", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });

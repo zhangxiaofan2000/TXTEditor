@@ -79,7 +79,31 @@ public class LoginWindow extends JFrame {
         mainPanel.add(loginButton, BorderLayout.EAST);
         mainPanel.add(messageLabel, BorderLayout.SOUTH);
         add(mainPanel);
-    }
+
+        // 创建注册按钮
+        JButton registerButton = new JButton("注册");
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegisterWindow registerWindow = new RegisterWindow();
+                registerWindow.setVisible(true);
+            }
+        });
+
+        // 将注册按钮添加到窗口中
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(registerButton);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // 将组件添加到窗口中
+        add(mainPanel);
+
+
+
+
+
+
+}
 
     public static void main(String[] args) {
 
