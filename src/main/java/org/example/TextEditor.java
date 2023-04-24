@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -18,10 +19,14 @@ public class TextEditor extends JFrame {
 
     public TextEditor() {
         setTitle("文本编辑器");
-        setSize(500, 500);
+        setSize(800, 600);
         setLocationRelativeTo(null);
 
         textArea = new JTextArea();
+        textArea.setLineWrap(true); // 自动换行
+        Font font = new Font("宋体", Font.PLAIN, 20);
+        textArea.setFont(font);
+
         add(new JScrollPane(textArea));
 
 
@@ -56,6 +61,9 @@ public class TextEditor extends JFrame {
         });
 
         JMenuBar menuBar = new JMenuBar();
+        Font menufont = new Font("宋体", Font.PLAIN, 16);
+        menuBar.setFont(menufont);
+
         JMenu fileMenu = new JMenu("文件");
         JMenuItem openMenuItem = new JMenuItem("打开");
         openMenuItem.addActionListener(new ActionListener() {
@@ -70,9 +78,12 @@ public class TextEditor extends JFrame {
                     File selectedFile = fileChooser.getSelectedFile();
                     try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
                         textArea.read(reader, null);
+
                         String text = textArea.getText();
                         int charCount = text.length();
                         statusLabel.setText("字数: " + charCount);
+                        setTitle(selectedFile.getName());
+
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(TextEditor.this,
                                 "无法打开文件: " + ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
