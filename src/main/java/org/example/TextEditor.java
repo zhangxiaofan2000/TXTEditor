@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Objects;
 
 public class TextEditor extends JFrame {
 
@@ -25,6 +26,9 @@ public class TextEditor extends JFrame {
         setTitle("文本编辑器");
         setSize(800, 600);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/logo.jpg")));
+
+        setIconImage(icon.getImage());
 
         textArea = new JTextArea();
         textArea.setLineWrap(true); // 自动换行

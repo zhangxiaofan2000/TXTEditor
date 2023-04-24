@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class LoginWindow extends JFrame {
     private JTextField usernameField;
@@ -25,6 +26,8 @@ public class LoginWindow extends JFrame {
         setTitle("登录");
         setSize(400, 150);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/logo.jpg")));
+        setIconImage(icon.getImage());
 
         // 创建用户名和密码输入框
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 5, 5));

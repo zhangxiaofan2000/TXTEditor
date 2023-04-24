@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Objects;
 
 public class RegisterWindow extends JFrame {
     private JTextField usernameField;
@@ -16,6 +17,8 @@ public class RegisterWindow extends JFrame {
         setTitle("注册");
         setSize(400, 200);
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/logo.jpg")));
+        setIconImage(icon.getImage());
 
         // 创建用户名和密码输入框
         JPanel inputPanel = new JPanel(new GridLayout(3, 2, 5, 5));
