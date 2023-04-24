@@ -11,6 +11,10 @@ public class TextEditor extends JFrame {
 
     private JTextArea textArea;
     private JLabel statusLabel;
+    private FindAndReplaceDialog findAndReplaceDialog;
+    private JButton prevButton, nextButton;
+    private int currentPage = 1;
+    private int linesPerPage = 10;
 
     public TextEditor() {
         setTitle("文本编辑器");
@@ -19,6 +23,7 @@ public class TextEditor extends JFrame {
 
         textArea = new JTextArea();
         add(new JScrollPane(textArea));
+
 
         statusLabel = new JLabel("字数: 0");
         add(statusLabel, "South");
@@ -65,6 +70,9 @@ public class TextEditor extends JFrame {
                     File selectedFile = fileChooser.getSelectedFile();
                     try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
                         textArea.read(reader, null);
+                        String text = textArea.getText();
+                        int charCount = text.length();
+                        statusLabel.setText("字数: " + charCount);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(TextEditor.this,
                                 "无法打开文件: " + ex.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
@@ -94,9 +102,29 @@ public class TextEditor extends JFrame {
             }
         });
 
+
+        JMenu editMenu = new JMenu("编辑");
+        JMenuItem findItem = new JMenuItem("查找和替换...");
+        findItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (findAndReplaceDialog == null) {
+                    findAndReplaceDialog = new FindAndReplaceDialog(TextEditor.this, textArea);
+                } else {
+                    findAndReplaceDialog.setVisible(true);
+                }
+            }
+        });
+        editMenu.add(findItem);
+
+
+
+
+
         fileMenu.add(openMenuItem);
         fileMenu.add(saveMenuItem);
         menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+
         setJMenuBar(menuBar);
 
 
