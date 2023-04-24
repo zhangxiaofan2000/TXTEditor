@@ -37,7 +37,7 @@ public class TextEditor extends JFrame {
 
 
         statusLabel = new JLabel("字数: 0");
-        add(statusLabel, "South");
+//        add(statusLabel, "South");
 
         // 添加翻页按钮
         JButton prevButton = new JButton("上一页");
@@ -68,11 +68,17 @@ public class TextEditor extends JFrame {
         // 添加下方的页码标签
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pageLabel = new JLabel("第" + currentPage + "页/共" + totalPage + "页");
+        statusPanel.add(statusLabel);
+
         statusPanel.add(prevButton);
         statusPanel.add(nextButton);
-        statusPanel.add(pageLabel);
-        add(statusPanel, BorderLayout.SOUTH);
 
+        // 将标签添加到状态栏容器中
+        statusPanel.add(Box.createHorizontalGlue()); // 添加一个水平的可伸缩的空间
+        statusPanel.add(pageLabel);
+
+        // 将状态栏容器添加到窗口的南侧
+        add(statusPanel, BorderLayout.SOUTH);
 
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -197,9 +203,5 @@ public class TextEditor extends JFrame {
 
 
 
-    public static void main(String[] args) {
-        TextEditor editor = new TextEditor();
-        editor.setVisible(true);
-    }
 }
 
