@@ -27,11 +27,13 @@ public class TextEditor extends JFrame {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateStatusLabel();
+
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateStatusLabel();
+
             }
 
             @Override
@@ -42,7 +44,9 @@ public class TextEditor extends JFrame {
             private void updateStatusLabel() {
                 String text = textArea.getText();
                 int wordCount = text.isEmpty() ? 0 : text.trim().split("\\s+").length;
-                statusLabel.setText("字数: " + wordCount);
+                int charCount = text.length();
+
+                statusLabel.setText("字数: " + charCount);
             }
         });
 
